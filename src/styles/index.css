@@ -1,12 +1,35 @@
+.input-todo{
+    width: 100%;
+    border: none;
+}
 
-/* 
+.input-todo:focus-visible{
+    outline: none;
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+.input-todo::placeholder{
+    text-align: center;
+}
 
-*/
+.list-group-item{
+    cursor: pointer;
+}
+
+.list-group-item .fas{
+    position: absolute;
+    right: 15px;
+    top: 0.7rem;
+    display: none;
+}
+
+.list-group-item:hover .fas{
+    display: block;
+}
+
+.list-group-item:hover .fas:hover{
+    color: #fb4d7f;
+}
+
+.card-body small{
+    font-size: 10px;
+}

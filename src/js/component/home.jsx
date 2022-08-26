@@ -2,23 +2,14 @@ import React from "react";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
+import TodoContainer from "./TodoContainer/index.jsx";
 
 //create your first component
 const Home = () => {
+	const Tasks = ["Task 1", "Task 2", "Task 3", "Task 4", "Task 5"]
 	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="container-fluid text-center bg-gradient p-3" style={{height: '100vh'}}>
+			<TodoContainer Tasks={Tasks}/>
 		</div>
 	);
 };
