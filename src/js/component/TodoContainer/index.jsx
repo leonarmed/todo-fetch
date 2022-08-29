@@ -15,9 +15,10 @@ const TodoContainer = ({Tasks}) => {
 	}
 
 	const deleteElement = (i) => {
+		console.log(i, 'i')
 		const res = prev => {
 			const newTodos = prev.filter((todo,index)=>{
-				return !(todo[i]===todo[index])
+				return !(i===index)
 			})
 			return newTodos
 		}
