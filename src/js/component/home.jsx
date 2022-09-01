@@ -6,10 +6,9 @@ import TodoContainer from "./TodoContainer/index.jsx";
 
 //create your first component
 const Home = () => {
-	const Tasks = ["Task 1", "Task 2", "Task 3", "Task 4", "Task 5"]
 	return (
 		<div className="container-fluid text-center bg-gradient p-3" style={{height: '100vh'}}>
-			<TodoContainer Tasks={Tasks}/>
+			<TodoContainer />
 		</div>
 	);
 };
