@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import empty from 'is-empty'
 import image from '../../../img/happy.png'
+import {request} from '../../helpers/request.jsx'
 
 const TodoContainer = () => {
 	const [todos,setTodos] = useState()
 	const [newTodo, setNewTodo] = useState("")
 	const [isLoading, setIsLoading] = useState(true)
+	const url = "https://assets.breatheco.de/apis/fake/todos/user/leonarmed"
 
 	const handleKeyDown = async (event) => {
 		setNewTodo(event.target.value)
@@ -13,44 +15,27 @@ const TodoContainer = () => {
 			setIsLoading(true)
 			
 			const options = {
+				url: url,
 				method: 'PUT',
-				headers: {"Content-Type": "application/json"},
 				body: JSON.stringify([...todos, {"label":newTodo, "done":false}])
 			};
-			await fetch("https://assets.breatheco.de/apis/fake/todos/user/leonarmed", options)
-			.then(response => response.json())
-			.then(response => {
-				console.log(response)
-				await getTodos()
-				setNewTodo('')
-			})
-			.catch(err => new Error(err))
-			.finally(()=>setIsLoading(false))
+
+			const res = await request(options)
+			if(res){
+				getTodos()
+			}
 		}
 	}
 
 	const deleteElement = async (i) => {
-		console.log(i, 'i')
-		const res = () => {
-			const newTodos = prev.filter((todo,index)=>{
-				return !(i===index)
-			})
-			const options = {
-				method: 'PUT',
-				headers: {"Content-Type": "application/json"},
-				body: JSON.stringify(newTodos)
-			};
-			await fetch("https://assets.breatheco.de/apis/fake/todos/user/leonarmed", options)
-			.then(response => response.json())
-			.then(response => {
-				console.log(response)
-				await getTodos()
-				setNewTodo('')
-			})
-			.catch(err => new Error(err))
-			.finally(()=>setIsLoading(false))
-		}
-		console.log(res)
+		// setIsLoading(true)
+		const newTodos = todos.filter((todo,index)=>{
+			if(i!==index){
+				return(todo[i])
+			}
+		})
+		console.log(newTodos) 
+		
 		// const options = {
 		// 	method: 'PUT',
 		// 	body: []
@@ -69,14 +54,12 @@ const TodoContainer = () => {
 	}
 
 	async function getTodos(){
-		await fetch("https://assets.breatheco.de/apis/fake/todos/user/leonarmed")
-		.then(response => response.json())
-		.then(response => {
-			setTodos(response)
-			console.log(response)
-		})
-		.catch(err => console.log(err))
-		.finally(()=>setIsLoading(false))
+		const res = await request({url})
+		if(res){
+			setTodos(res)
+			setIsLoading(false)
+			return(res)
+		}
 	}
 
 	useEffect(()=>{
