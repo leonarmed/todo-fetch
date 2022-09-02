@@ -23,34 +23,33 @@ const TodoContainer = () => {
 			const res = await request(options)
 			if(res){
 				getTodos()
+				setNewTodo("")
 			}
 		}
 	}
 
 	const deleteElement = async (i) => {
-		// setIsLoading(true)
-		const newTodos = todos.filter((todo,index)=>{
-			if(i!==index){
-				return(todo[i])
+		setIsLoading(true)
+		if(todos.length===1){
+			const res = await request({url:url, method:'DELETE'})
+			if(res){
+				const res = await request({url:url, method:'POST', body:'[]'})
+				if(res){
+					getTodos()
+				}
 			}
-		})
-		console.log(newTodos) 
-		
-		// const options = {
-		// 	method: 'PUT',
-		// 	body: []
-		// };
-		// console.log(res())
-		// await fetch("https://assets.breatheco.de/apis/fake/todos/user/leonarmed", options)
-		// .then(response => response.json())
-		// .then(response => {
-		// 	console.log(response)
-		// 	setTodos([...todos, {"label":newTodo, "done":false}])
-		// 	setNewTodo('')
-		// })
-		// .catch(err => console.error(err))
-		// .finally(()=>setIsLoading(false))
-		// setTodos(res)
+		}else{
+			todos.splice(i,1)
+			const options = {
+				url: url,
+				method: 'PUT',
+				body: JSON.stringify(todos)
+			};
+			const res = await request(options)
+			if(res){
+				getTodos()
+			}
+		}
 	}
 
 	async function getTodos(){
@@ -80,7 +79,7 @@ const TodoContainer = () => {
 							onKeyDownCapture={handleKeyDown}
 							onChange={(e)=>setNewTodo(e.target.value)}/>
 					</li>
-					{todos && !empty(todos) && !isLoading ? 
+					{todos && !isLoading ? 
 						todos.map((todo,i)=>{
 						return <li key={i} className="list-group-item" >{todo.label}<i className="fas fa-trash-alt" onClick={()=>deleteElement(i)}></i></li>	
 					})
