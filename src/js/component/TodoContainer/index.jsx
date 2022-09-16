@@ -10,8 +10,8 @@ const TodoContainer = () => {
 	const url = "https://assets.breatheco.de/apis/fake/todos/user/leonarmed"
 
 	const handleKeyDown = async (event) => {
-		setNewTodo(event.target.value)
-		if (event.key === 'Enter' && !empty(newTodo)) {
+		setNewTodo(event.target.value.trim())
+		if (event.key === 'Enter' && event.target.value.trim()!=="") {
 			setIsLoading(true)
 			
 			const options = {
@@ -31,13 +31,7 @@ const TodoContainer = () => {
 	const deleteElement = async (i) => {
 		setIsLoading(true)
 		if(todos.length===1){
-			const res = await request({url:url, method:'DELETE'})
-			if(res){
-				const res = await request({url:url, method:'POST', body:'[]'})
-				if(res){
-					getTodos()
-				}
-			}
+			await deleteAll()
 		}else{
 			todos.splice(i,1)
 			const options = {
@@ -46,6 +40,17 @@ const TodoContainer = () => {
 				body: JSON.stringify(todos)
 			};
 			const res = await request(options)
+			if(res){
+				getTodos()
+			}
+		}
+	}
+
+	const deleteAll = async () => {
+		setIsLoading(true)
+		const res = await request({url:url, method:'DELETE'})
+		if(res){
+			const res = await request({url:url, method:'POST', body:'[]'})
 			if(res){
 				getTodos()
 			}
@@ -95,6 +100,7 @@ const TodoContainer = () => {
 					}
 				</div>
             </div>
+			<div className="btn btn-danger mt-4" onClick={()=>deleteAll()}>Eliminar todas las tareas</div>
         </div>
     )
 }
